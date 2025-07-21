@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MediTech</title>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <body
+        style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
+        <div th:replace="fragments/navbar/navbar :: navbar"></div>
+
+        <div class="container my-5">
+            <h2 class="text-center mb-4 fw-bold text-primary">MediTech - Sistema
+                de Gestión Hospitalaria</h2>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+
+                <div class="col">
+                    <div
+                        class="card h-100 shadow-lg text-center border-0 rounded-4 hover-shadow">
+                        <div class="card-body">
+                            <i
+                                class="bi bi-people-fill display-4 text-primary"></i>
+                            <h5 class="card-title mt-3">Gestión de
+                                pacientes</h5>
+                            <p class="card-text">Acá puedes ver, modificar o
+                                desactivar pacientes.</p>
+                            <a href="#"
+                                class="btn btn-outline-primary rounded-pill px-4">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div
+                        class="card h-100 shadow-lg text-center border-0 rounded-4 hover-shadow">
+                        <div class="card-body">
+                            <i
+                                class="bi bi-person-plus-fill display-4 text-success"></i>
+                            <h5 class="card-title mt-3">Registro de
+                                Paciente</h5>
+                            <p class="card-text">Acá puedes registrar un nuevo
+                                paciente.</p>
+                            <a href="#"
+                                class="btn btn-outline-success rounded-pill px-4">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+
+</html>

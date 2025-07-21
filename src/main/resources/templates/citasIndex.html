@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MediTech</title>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <body
+        style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
+        <div th:replace="fragments/navbar/navbar :: navbar"></div>
+
+        <div class="container my-5">
+            <h2 class="text-center mb-4 fw-bold text-primary">MediTech - Sistema
+                de Gestión Hospitalaria</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                <div class="col">
+                    <div
+                        class="card h-100 shadow-lg text-center border-0 rounded-4 hover-shadow">
+                        <div class="card-body">
+                            <i
+                                class="bi bi-journal-check display-4 text-warning"></i>
+                            <h5 class="card-title mt-3">Gestión de
+                                Citas</h5>
+                            <p class="card-text">Acá puedes ver, modificar o
+                                desactivar citas.</p>
+                            <a href="#"
+                                class="btn btn-outline-warning rounded-pill px-4">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div
+                        class="card h-100 shadow-lg text-center border-0 rounded-4 hover-shadow">
+                        <div class="card-body">
+                            <i
+                                class="bi bi-journal-plus display-4 text-success"></i>
+                            <h5 class="card-title mt-3">Agregar nueva Cita.</h5>
+                            <p class="card-text">Acá puedes registrar una nueva
+                                cita.</p>
+                            <a href="#"
+                                class="btn btn-outline-success rounded-pill px-4">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div
+                        class="card h-100 shadow-lg text-center border-0 rounded-4 hover-shadow">
+                        <div class="card-body">
+                            <i
+                                class="bi bi-journal-text display-4 text-secondary-emphasis"></i>
+                            <h5 class="card-title mt-3">Consultar
+                                Información</h5>
+                            <p class="card-text">Acá puedes consultar
+                                información de citas.</p>
+                            <a href="#"
+                                class="btn btn-outline-secondary rounded-pill px-4">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+
+</html>
