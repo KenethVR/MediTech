@@ -28,4 +28,9 @@ public class HomeController {
     public String historialIndex() {
         return "historialIndex"; // This should correspond to a view template named "index.html"
     }
+
+    @GetMapping({ "/traslados_index", "/trasladosIndex" })
+    public String trasladosIndex() {
+        return "trasladosIndex"; // This should correspond to a view template named "index.html"
+    }
 }

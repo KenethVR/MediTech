@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>MediTech - Traslado de Pacientes</title>
+
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet" />
+        <!-- Bootstrap Icons -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+            rel="stylesheet" />
+        <!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <style>
+body {
+  background: linear-gradient(to right, #e0f7fa, #ffffff);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-title {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-weight: 700;
+  color: #0d6efd;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.container-main {
+  max-width: 900px;
+  background: white;
+  padding: 30px 40px 40px 40px;
+  margin: 0 auto 60px auto;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+}
+
+/* Cards grid for pacientes */
+.row-cols-1 > .col, .row-cols-md-2 > .col {
+  display: flex;
+}
+
+.card {
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(13, 110, 253, 0.25);
+}
+
+.card-title {
+  letter-spacing: 0.05em;
+}
+
+.btn-primary {
+  border-radius: 50px;
+  padding: 0.35rem 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgb(13 110 253 / 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  box-shadow: 0 6px 14px rgb(13 110 253 / 0.35);
+}
+
+.modal-content {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.modal-header {
+  background-color: #0d6efd;
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-body label {
+  font-weight: 600;
+}
+
+#resultado {
+  font-size: 1.25rem;
+  color: #198754;
+  margin-top: 25px;
+  text-align: center;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+        </style>
+    </head>
+
+    <body>
+        <div
+            style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
+            <div th:replace="fragments/navbar/navbar :: navbar"></div>
+            <div class="container-main">
+                <h1 class="header-title">MediTech - Gestión de Traslado de
+                    Pacientes</h1>
+
+                <div class="row row-cols-1 row-cols-md-4 g-4">
+                    <div class="col">
+                        <div class="card shadow-sm h-100 text-center">
+                            <div
+                                class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5
+                                        class="card-title text-primary fw-bold">Juan
+                                        Pérez</h5>
+                                    <p
+                                        class="card-text mb-1"><strong>Habitación:</strong>
+                                        101</p>
+                                    <p class="card-text"><strong>Sala
+                                            Actual:</strong> Internamiento</p>
+                                </div>
+                                <button
+                                    class="btn btn-primary align-self-start mt-3 mx-auto"
+                                    onclick="abrirModal('Juan Pérez', '101', 'Internamiento')">
+                                    <i
+                                        class="bi bi-arrow-right-circle-fill me-2"></i>
+                                    Trasladar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            <div
+                                class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5
+                                        class="card-title text-primary fw-bold">María
+                                        Gómez</h5>
+                                    <p
+                                        class="card-text mb-1"><strong>Habitación:</strong>
+                                        202</p>
+                                    <p class="card-text"><strong>Sala
+                                            Actual:</strong> UCI</p>
+                                </div>
+                                <button
+                                    class="btn btn-primary align-self-start mt-3"
+                                    onclick="abrirModal('María Gómez', '202', 'UCI')">
+                                    <i
+                                        class="bi bi-arrow-right-circle-fill me-2"></i>
+                                    Trasladar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            <div
+                                class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5
+                                        class="card-title text-primary fw-bold">Carlos
+                                        Ramírez</h5>
+                                    <p
+                                        class="card-text mb-1"><strong>Habitación:</strong>
+                                        303</p>
+                                    <p class="card-text"><strong>Sala
+                                            Actual:</strong> Cirugía</p>
+                                </div>
+                                <button
+                                    class="btn btn-primary align-self-start mt-3"
+                                    onclick="abrirModal('Carlos Ramírez', '303', 'Cirugía')">
+                                    <i
+                                        class="bi bi-arrow-right-circle-fill me-2"></i>
+                                    Trasladar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            <div
+                                class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5
+                                        class="card-title text-primary fw-bold">Keneth
+                                        Vargas</h5>
+                                    <p
+                                        class="card-text mb-1"><strong>Habitación:</strong>
+                                        404</p>
+                                    <p class="card-text"><strong>Sala
+                                            Actual:</strong> Medicinas</p>
+                                </div>
+                                <button
+                                    class="btn btn-primary align-self-start mt-3"
+                                    onclick="abrirModal('Keneth Vargas', '404', 'Medicinas')">
+                                    <i
+                                        class="bi bi-arrow-right-circle-fill me-2"></i>
+                                    Trasladar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            <div
+                                class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5
+                                        class="card-title text-primary fw-bold">Jose
+                                        Ramírez</h5>
+                                    <p
+                                        class="card-text mb-1"><strong>Habitación:</strong>
+                                        305</p>
+                                    <p class="card-text"><strong>Sala
+                                            Actual:</strong> Cirugía</p>
+                                </div>
+                                <button
+                                    class="btn btn-primary align-self-start mt-3"
+                                    onclick="abrirModal('Jose Ramírez', '305', 'Cirugía')">
+                                    <i
+                                        class="bi bi-arrow-right-circle-fill me-2"></i>
+                                    Trasladar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para seleccionar nueva sala -->
+                <div class="modal fade" id="modalTraslado" tabindex="-1"
+                    aria-labelledby="modalTrasladoLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content border-0 shadow">
+                            <div class="modal-header bg-primary text-white">
+                                <h5
+                                    class="modal-title d-flex align-items-center gap-2"
+                                    id="modalTrasladoLabel">
+                                    <i class="bi bi-person-arms-up"></i>
+                                    Trasladar
+                                    Paciente
+                                </h5>
+                                <button type="button"
+                                    class="btn-close btn-close-white"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="detallePaciente"
+                                    class="fw-bold mb-3"></p>
+                                <label for="nuevaSala" class="form-label">Nueva
+                                    Sala</label>
+                                <select class="form-select" id="nuevaSala">
+                                    <option selected disabled>Seleccione sala
+                                        destino</option>
+                                    <option>Urgencias</option>
+                                    <option>Laboratorio</option>
+                                    <option>Cirugía</option>
+                                    <option>Internamiento</option>
+                                    <option>UCI</option>
+                                    <option>Farmacia</option>
+                                    <option>Rayos X</option>
+                                    <option>Rehabilitación</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal">
+                                    <i class="bi bi-x-circle"></i> Cancelar
+                                </button>
+                                <button type="button" class="btn btn-success"
+                                    onclick="confirmarTraslado()">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Confirmar Traslado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultado"></div>
+            </div>
+
+            <!-- Bootstrap JS Bundle -->
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Script propio -->
+            <script>
+    let pacienteActual = '';
+    let habitacionActual = '';
+    let salaActual = '';
+
+    function abrirModal(paciente, habitacion, sala) {
+      pacienteActual = paciente;
+      habitacionActual = habitacion;
+      salaActual = sala;
+      document.getElementById('detallePaciente').innerText = `Paciente: ${paciente} - Habitación: ${habitacion} - Sala Actual: ${sala}`;
+      const modal = new bootstrap.Modal(document.getElementById('modalTraslado'));
+      modal.show();
+    }
+
+    function confirmarTraslado() {
+      const nuevaSala = document.getElementById('nuevaSala').value;
+      if (!nuevaSala || nuevaSala === 'Seleccione sala destino') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Error',
+          text: 'Debe seleccionar una sala destino.',
+        });
+        return;
+      }
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Traslado confirmado',
+        html: `
+          <p>El traslado de <strong>${pacienteActual}</strong> (Hab. <strong>${habitacionActual}</strong>) a <strong>${nuevaSala}</strong> ha sido confirmado.</p>
+        `,
+        confirmButtonText: 'Aceptar'
+      });
+
+      const modal = bootstrap.Modal.getInstance(document.getElementById('modalTraslado'));
+      modal.hide();
+
+      // Mostrar resultado con fade-in
+      const resultadoDiv = document.getElementById('resultado');
+      resultadoDiv.style.opacity = 0;
+      resultadoDiv.innerText = `Último traslado: ${pacienteActual} → ${nuevaSala}`;
+      let opacity = 0;
+      const fadeIn = setInterval(() => {
+        if (opacity >= 1) clearInterval(fadeIn);
+        resultadoDiv.style.opacity = opacity;
+        opacity += 0.05;
+      }, 30);
+    }
+  </script>
+        </body>
+
+    </html>
