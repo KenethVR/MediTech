@@ -33,4 +33,15 @@ public class HomeController {
     public String trasladosIndex() {
         return "trasladosIndex"; // This should correspond to a view template named "index.html"
     }
+
+    @GetMapping({ "/medicos_index", "/medicosIndex" })
+    public String medicosIndex() {
+        return "medicosIndex"; // This should correspond to a view template named "index.html"
+    }
+
+    @GetMapping({ "/colaboradores_index", "/colaboradoresIndex" })
+    public String colaboradoresIndex() {
+        return "colaboradoresIndex"; // This should correspond to a view template named "index.html"
+    }
+
 }
