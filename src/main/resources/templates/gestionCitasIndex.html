@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MediTech</title>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="icon" href="/img/logo.png">
+    </head>
+    <body
+        style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
+        <div th:replace="fragments/navbar/navbar :: navbar"></div>
+
+        <div class="container my-5">
+            <h2 class="text-center mb-4 fw-bold text-primary">MediTech - Sistema
+                de Gestión Hospitalaria</h2>
+
+            <hr class="my-5">
+
+            <h4 class="text-center text-secondary fw-semibold mb-4">Gestión de
+                Citas
+                Programadas</h4>
+
+            <!-- Tabla de gestión de citas -->
+            <div class="table-responsive mt-5">
+                <table
+                    class="table table-striped table-hover align-middle rounded-4 overflow-hidden shadow">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre del Paciente</th>
+                            <th scope="col">Fecha y Hora</th>
+                            <th scope="col">Médico</th>
+                            <th scope="col">Área de Servicio</th>
+
+                            <th scope="col">Estado Clínico</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyCitas">
+                        <!-- Contenido dinámico -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Modal Modificar Cita -->
+            <div class="modal fade" id="modalModificarCita" tabindex="-1"
+                aria-labelledby="modalModificarCitaLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content rounded-4 shadow">
+                        <div
+                            class="modal-header bg-primary text-white rounded-top-4">
+                            <h5 class="modal-title"
+                                id="modalModificarCitaLabel">Modificar Cita</h5>
+                            <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formModificarCita">
+                                <input type="hidden" id="idCitaModificar">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nombre del
+                                            Paciente</label>
+                                        <input type="text" id="nombrePaciente"
+                                            class="form-control"
+                                            placeholder="Ej. Juan Pérez">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha y
+                                            Hora</label>
+                                        <input type="datetime-local"
+                                            id="fechaHora"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Médico</label>
+                                        <input type="text" id="medico"
+                                            class="form-control"
+                                            placeholder="Ej. Dra. Gómez">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Área de
+                                            Servicio</label>
+                                        <input type="text" id="areaServicio"
+                                            class="form-control"
+                                            placeholder="Ej. Cardiología">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Estado
+                                            Clínico</label>
+                                        <select id="estadoClinico"
+                                            class="form-select">
+                                            <option>Urgente</option>
+                                            <option>Critico</option>
+                                            <option>Observacion</option>
+                                            <option>Grave</option>
+                                            <option>Estable</option>
+                                        </select>
+                                    </div>
+                                    <div
+                                        class="col-md-6 d-flex align-items-center">
+                                        <div class="form-check mt-4">
+                                            <input class="form-check-input"
+                                                type="checkbox" id="estadoCita"
+                                                checked>
+                                            <label class="form-check-label"
+                                                for="estadoCita">
+                                                Cita Activa
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"
+                                class="btn btn-secondary rounded-pill"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" form="formModificarCita"
+                                class="btn btn-primary rounded-pill">Guardar
+                                Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        let citas = [];
+
+        async function cargarCitas() {
+            try {
+                const resp = await fetch('/api/estructura/citas/listar');
+                if (!resp.ok) throw new Error('Error al obtener citas');
+                citas = await resp.json();
+                const tbody = document.getElementById('tbodyCitas');
+                tbody.innerHTML = '';
+
+                for (let index = 0; index < citas.length; index++) {
+                    const cita = citas[index];
+                    if (!cita.estado) continue;
+                    
+                    const pacienteResp = await fetch(`/api/estructura/pacientes/buscar/${cita.paciente}`);
+                    const medicoResp = await fetch(`/api/estructura/medicos/buscar/${cita.medico}`);
+                    const serviciosResp = await fetch('/api/cargar/servicios');
+                    if (!serviciosResp.ok) {
+                        console.warn(`Error al obtener servicios para la cita ID ${cita.id}`);
+                        continue;
+                    }
+                    const servicios = await serviciosResp.json();
+                    const servicio = servicios.find(s => s.id === cita.areaServicio);
+                    const areaServicio = servicio ? servicio.descripcion : 'Desconocido';
+
+                    if (!pacienteResp.ok || !medicoResp.ok) {
+                        console.warn(`Error al obtener datos relacionados para la cita ID ${cita.id}`);
+                        continue;
+                    }
+
+                    const paciente = await pacienteResp.json();
+                    const medico = await medicoResp.json();
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>${paciente.nombre} ${paciente.apellido1} ${paciente.apellido2}</td>
+                        <td>${new Date(cita.fechaCita).toLocaleString()}</td>
+                        <td>${medico.nombre} ${medico.apellidos}</td>
+                        <td>${areaServicio}</td>
+                        <td><span class="badge ${obtenerColorEstadoClinico(cita.urgenciaClinica)}">${cita.urgenciaClinica}</span></td>
+                        <td><span class="badge ${cita.estado ? 'bg-success' : 'bg-secondary'}">${cita.estado ? 'Activo' : 'Inactivo'}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="abrirModalModificar(${cita.id})">
+                                <i class="bi bi-pencil-square"></i> Modificar
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error cargando citas");
+            }
+        }
+
+
+        function obtenerColorEstadoClinico(estado) {
+            if (!estado || typeof estado !== 'string') return 'bg-secondary'; // Valor por defecto
+
+            estado = estado.toLowerCase();
+            if (estado === 'urgente') return 'bg-danger text-white';
+            if (estado === 'critico') return 'bg-warning';
+            if (estado === 'observacion') return 'bg-info';
+            if (estado === 'grave') return 'bg-secondary';
+            if (estado === 'estable') return 'bg-success';
+            // Si no coincide con ninguno, retornar un color neutro
+            return 'bg-info';
+        }
+
+function abrirModalModificar(idCita) {
+    const cita = citas.find(c => c.id === idCita);
+    if (!cita) return;
+
+    // Obtener detalles del paciente, médico y servicio
+    fetch(`/api/estructura/pacientes/buscar/${cita.paciente}`)
+        .then(res => res.json())
+        .then(paciente => {
+            document.getElementById('nombrePaciente').value = `${paciente.nombre} ${paciente.apellido1} ${paciente.apellido2}`;
+        });
+
+    fetch(`/api/estructura/medicos/buscar/${cita.medico}`)
+        .then(res => res.json())
+        .then(medico => {
+            document.getElementById('medico').value = `${medico.nombre} ${medico.apellidos}`;
+        });
+
+    fetch('/api/cargar/servicios')
+        .then(res => res.json())
+        .then(servicios => {
+            const servicio = servicios.find(s => s.id === cita.areaServicio);
+            document.getElementById('areaServicio').value = servicio ? servicio.descripcion : 'Desconocido';
+        });
+
+    document.getElementById('idCitaModificar').value = cita.id;
+    document.getElementById('fechaHora').value = cita.fechaCita.substring(0, 16);
+    document.getElementById('estadoClinico').value = cita.urgenciaClinica;
+    
+    document.getElementById('estadoCita').checked = cita.estado;
+
+    const modal = new bootstrap.Modal(document.getElementById('modalModificarCita'));
+    modal.show();
+}
+
+document.getElementById('formModificarCita').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const id = parseInt(document.getElementById('idCitaModificar').value);
+    const estadoClinico = document.getElementById('estadoClinico').value.toUpperCase();
+    const estado = document.getElementById('estadoCita').checked;
+    const fechaCita = document.getElementById('fechaHora').value;
+
+    // No se pueden modificar paciente, médico ni áreaServicio desde el modal
+    // Se obtienen de la cita original en memoria
+    const cita = citas.find(c => c.id === id);
+    if (!cita) {
+        alert("Cita no encontrada.");
+        return;
+    }
+
+    const citaActualizada = {
+        id: id,
+        motivoConsulta: cita.motivoConsulta || "",
+        dictamenMedico: cita.dictamenMedico || "",
+        estado: estado,
+        fechaCita: fechaCita,
+        urgenciaClinica: estadoClinico,
+        paciente: cita.paciente,
+        medico: cita.medico,
+        areaServicio: cita.areaServicio
+    };
+
+    // Verificar que paciente, medico y areaServicio sean enteros
+    if (typeof cita.paciente !== "number" || typeof cita.medico !== "number" || typeof cita.areaServicio !== "number") {
+        alert("Error: Los campos paciente, medico y areaServicio deben ser valores numéricos.");
+        return;
+    }
+    try {
+        const resp = await fetch('/api/estructura/citas/modificar', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(citaActualizada)
+        });
+        if (!resp.ok) throw new Error("Error al modificar");
+        Swal.fire({
+            icon: 'success',
+            title: 'Cita modificada',
+            text: 'La cita fue modificada correctamente',
+            confirmButtonColor: '#0d6efd'
+        });
+        bootstrap.Modal.getInstance(document.getElementById('modalModificarCita')).hide();
+        cargarCitas();
+    } catch (err) {
+        console.error(err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo modificar la cita. Por favor, inténtelo de nuevo.',
+            confirmButtonColor: '#dc3545'
+        });
+    }
+});
+
+        document.addEventListener('DOMContentLoaded', cargarCitas);
+    </script>
+    </body>
+
+</html>

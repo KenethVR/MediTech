@@ -51,16 +51,93 @@
                                     href="/colaboradores_index">Colaboradores</a>
                             </li>
                         </ul>
-                        <form class="d-flex" role="search">
+                        <form class="d-flex" role="search"
+                            onsubmit="event.preventDefault(); buscarPacientePorNombre(document.getElementById('inputBuscarPersona').value);">
                             <input class="form-control me-2" type="search"
                                 placeholder="Buscar Persona"
-                                aria-label="Buscar">
+                                aria-label="Buscar"
+                                id="inputBuscarPersona" autocomplete="off">
                             <button class="btn btn-outline-light"
                                 type="submit">Buscar</button>
                         </form>
                     </div>
                 </div>
             </nav>
+
+            <!-- Modal Resultado de Búsqueda -->
+            <div class="modal fade" id="modalResultadoCita" tabindex="-1"
+                aria-labelledby="modalResultadoCitaLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content rounded-4 shadow">
+                        <div
+                            class="modal-header bg-primary text-white rounded-top-4">
+                            <h5 class="modal-title"
+                                id="modalResultadoCitaLabel">Resultado de
+                                Búsqueda</h5>
+                            <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body" id="contenidoCita">
+                            <!-- Contenido dinámico -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+      async function buscarPacientePorNombre(nombre) {
+        const contenido = document.getElementById('contenidoCita');
+        try {
+          const [pacienteRes, serviciosRes] = await Promise.all([
+            fetch(`/api/estructura/pacientes/buscarNombre/${nombre}`),
+            fetch('/api/cargar/servicios')
+          ]);
+
+          if (!pacienteRes.ok) throw new Error("Paciente no encontrado");
+
+          const pacientes = await pacienteRes.json();
+          const servicios = await serviciosRes.json();
+
+          if (pacientes.length === 0) {
+            contenido.innerHTML = `<p class="text-danger">No hay pacientes registrados con ese nombre.</p>`;
+          } else {
+            contenido.innerHTML = pacientes.map(paciente => {
+              const servicio = servicios.find(s => s.id === paciente.servicioHospitalId);
+              const descripcionServicio = servicio ? servicio.descripcion : 'No asignado';
+              const edad = calcularEdad(new Date(paciente.fechaNacimiento));
+
+              return `
+                <div class="mb-3 p-3 border rounded">
+                  <p><strong>Nombre:</strong> ${paciente.nombre} ${paciente.apellido1} ${paciente.apellido2}</p>
+                  <p><strong>Cédula:</strong> ${paciente.cedula}</p>
+                  <p><strong>Edad:</strong> ${edad} años</p>
+                  <p><strong>Estado Clínico:</strong> ${paciente.urgenciaClinica}</p>
+                  <p><strong>Área Hospitalaria:</strong> ${descripcionServicio}</p>
+                </div>
+              `;
+            }).join('');
+          }
+        } catch (e) {
+          contenido.innerHTML = `<p class="text-danger">${e.message}</p>`;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('modalResultadoCita'));
+        modal.show();
+      }
+
+      function calcularEdad(fechaNacimiento) {
+        const hoy = new Date();
+        const nacimiento = new Date(fechaNacimiento);
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const m = hoy.getMonth() - nacimiento.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+          edad--;
+        }
+        return edad;
+      }
+    </script>
+
         </div>
 
     </body>

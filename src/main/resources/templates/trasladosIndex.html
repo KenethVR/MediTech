@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-
+    <link rel="icon" href="/img/logo.png">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -21,7 +21,7 @@
 body {
   background: linear-gradient(to right, #e0f7fa, #ffffff);
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
 }
 
 .header-title {
@@ -107,138 +107,17 @@ body {
     </head>
 
     <body>
+        <div th:replace="fragments/navbar/navbar :: navbar"></div>
         <div
             style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
-            <div th:replace="fragments/navbar/navbar :: navbar"></div>
+
             <div class="container-main">
                 <h1 class="header-title">MediTech - Gestión de Traslado de
                     Pacientes</h1>
 
-                <div class="row row-cols-1 row-cols-md-4 g-4">
-                    <div class="col">
-                        <div class="card shadow-sm h-100 text-center">
-                            <div
-                                class="card-body d-flex flex-column justify-content-between">
-                                <div>
-                                    <h5
-                                        class="card-title text-primary fw-bold">Juan
-                                        Pérez</h5>
-                                    <p
-                                        class="card-text mb-1"><strong>Habitación:</strong>
-                                        101</p>
-                                    <p class="card-text"><strong>Sala
-                                            Actual:</strong> Internamiento</p>
-                                </div>
-                                <button
-                                    class="btn btn-primary align-self-start mt-3 mx-auto"
-                                    onclick="abrirModal('Juan Pérez', '101', 'Internamiento')">
-                                    <i
-                                        class="bi bi-arrow-right-circle-fill me-2"></i>
-                                    Trasladar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="card shadow-sm h-100">
-                            <div
-                                class="card-body d-flex flex-column justify-content-between">
-                                <div>
-                                    <h5
-                                        class="card-title text-primary fw-bold">María
-                                        Gómez</h5>
-                                    <p
-                                        class="card-text mb-1"><strong>Habitación:</strong>
-                                        202</p>
-                                    <p class="card-text"><strong>Sala
-                                            Actual:</strong> UCI</p>
-                                </div>
-                                <button
-                                    class="btn btn-primary align-self-start mt-3"
-                                    onclick="abrirModal('María Gómez', '202', 'UCI')">
-                                    <i
-                                        class="bi bi-arrow-right-circle-fill me-2"></i>
-                                    Trasladar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="card shadow-sm h-100">
-                            <div
-                                class="card-body d-flex flex-column justify-content-between">
-                                <div>
-                                    <h5
-                                        class="card-title text-primary fw-bold">Carlos
-                                        Ramírez</h5>
-                                    <p
-                                        class="card-text mb-1"><strong>Habitación:</strong>
-                                        303</p>
-                                    <p class="card-text"><strong>Sala
-                                            Actual:</strong> Cirugía</p>
-                                </div>
-                                <button
-                                    class="btn btn-primary align-self-start mt-3"
-                                    onclick="abrirModal('Carlos Ramírez', '303', 'Cirugía')">
-                                    <i
-                                        class="bi bi-arrow-right-circle-fill me-2"></i>
-                                    Trasladar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="card shadow-sm h-100">
-                            <div
-                                class="card-body d-flex flex-column justify-content-between">
-                                <div>
-                                    <h5
-                                        class="card-title text-primary fw-bold">Keneth
-                                        Vargas</h5>
-                                    <p
-                                        class="card-text mb-1"><strong>Habitación:</strong>
-                                        404</p>
-                                    <p class="card-text"><strong>Sala
-                                            Actual:</strong> Medicinas</p>
-                                </div>
-                                <button
-                                    class="btn btn-primary align-self-start mt-3"
-                                    onclick="abrirModal('Keneth Vargas', '404', 'Medicinas')">
-                                    <i
-                                        class="bi bi-arrow-right-circle-fill me-2"></i>
-                                    Trasladar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="card shadow-sm h-100">
-                            <div
-                                class="card-body d-flex flex-column justify-content-between">
-                                <div>
-                                    <h5
-                                        class="card-title text-primary fw-bold">Jose
-                                        Ramírez</h5>
-                                    <p
-                                        class="card-text mb-1"><strong>Habitación:</strong>
-                                        305</p>
-                                    <p class="card-text"><strong>Sala
-                                            Actual:</strong> Cirugía</p>
-                                </div>
-                                <button
-                                    class="btn btn-primary align-self-start mt-3"
-                                    onclick="abrirModal('Jose Ramírez', '305', 'Cirugía')">
-                                    <i
-                                        class="bi bi-arrow-right-circle-fill me-2"></i>
-                                    Trasladar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row row-cols-1 row-cols-md-4 g-4"
+                    id="pacientes-container">
+                    <!-- Aquí se cargarán dinámicamente las cards -->
                 </div>
 
                 <!-- Modal para seleccionar nueva sala -->
@@ -267,14 +146,6 @@ body {
                                 <select class="form-select" id="nuevaSala">
                                     <option selected disabled>Seleccione sala
                                         destino</option>
-                                    <option>Urgencias</option>
-                                    <option>Laboratorio</option>
-                                    <option>Cirugía</option>
-                                    <option>Internamiento</option>
-                                    <option>UCI</option>
-                                    <option>Farmacia</option>
-                                    <option>Rayos X</option>
-                                    <option>Rehabilitación</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -302,54 +173,227 @@ body {
 
             <!-- Script propio -->
             <script>
-    let pacienteActual = '';
-    let habitacionActual = '';
-    let salaActual = '';
+let pacientes = [];
+let servicios = [];
+let pacienteActual = null;
+let habitacionActual = '';
+let salaActualId = null;
+let salaActualDescripcion = '';
 
-    function abrirModal(paciente, habitacion, sala) {
-      pacienteActual = paciente;
-      habitacionActual = habitacion;
-      salaActual = sala;
-      document.getElementById('detallePaciente').innerText = `Paciente: ${paciente} - Habitación: ${habitacion} - Sala Actual: ${sala}`;
-      const modal = new bootstrap.Modal(document.getElementById('modalTraslado'));
-      modal.show();
+const prioridades = {
+  'URGENTE': 1,
+  'CRITICO': 2,
+  'GRAVE': 3,
+  'OBSERVACION': 4,
+  'ESTABLE': 5
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const [pacientesRes, serviciosRes] = await Promise.all([
+      fetch('/api/estructura/pacientes/listar'),
+      fetch('/api/cargar/servicios')
+    ]);
+    pacientes = await pacientesRes.json();
+    servicios = await serviciosRes.json();
+
+    // Ordenar pacientes por prioridad clínica
+    pacientes.sort((a, b) => {
+      const prioridadA = prioridades[a.urgenciaClinica?.toUpperCase()] || 99;
+      const prioridadB = prioridades[b.urgenciaClinica?.toUpperCase()] || 99;
+      return prioridadA - prioridadB;
+    });
+
+    const container = document.getElementById('pacientes-container');
+    container.innerHTML = '';
+
+    if (pacientes.length === 0) {
+      container.innerHTML = '<p class="text-center text-muted">No hay pacientes registrados.</p>';
+      return;
     }
 
-    function confirmarTraslado() {
-      const nuevaSala = document.getElementById('nuevaSala').value;
-      if (!nuevaSala || nuevaSala === 'Seleccione sala destino') {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Error',
-          text: 'Debe seleccionar una sala destino.',
-        });
-        return;
-      }
+    pacientes.forEach((paciente, index) => {
+      const servicio = servicios.find(s => s.id === paciente.servicioHospitalId);
+      const descripcionServicio = servicio ? servicio.descripcion : 'No asignado';
+      const habitacion = paciente.habitacion || `Habitación ${index + 100}`;
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Traslado confirmado',
-        html: `
-          <p>El traslado de <strong>${pacienteActual}</strong> (Hab. <strong>${habitacionActual}</strong>) a <strong>${nuevaSala}</strong> ha sido confirmado.</p>
-        `,
-        confirmButtonText: 'Aceptar'
+      const card = document.createElement('div');
+      card.className = 'col';
+      card.innerHTML = `
+        <div class="card shadow-sm h-100 text-center">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="card-title text-primary fw-bold">${paciente.nombre} ${paciente.apellido1} ${paciente.apellido2}</h5>
+              <p class="card-text mb-1"><strong>Habitación:</strong> ${habitacion}</p>
+              <p class="card-text"><strong>Sala Actual:</strong> ${descripcionServicio}</p>
+              <p class="card-text"><strong>Prioridad Clínica:</strong> ${paciente.urgenciaClinica || 'N/A'}</p>
+            </div>
+            <button class="btn btn-primary align-self-start mt-3 mx-auto" onclick="abrirModal(${paciente.cedula})">
+              <i class="bi bi-arrow-right-circle-fill me-2"></i>Trasladar
+            </button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error('Error cargando pacientes o servicios:', error);
+  }
+});
+
+async function abrirModal(cedulaPaciente) {
+  pacienteActual = pacientes.find(p => p.cedula === cedulaPaciente);
+  if (!pacienteActual) return;
+
+  const servicio = servicios.find(s => s.id === pacienteActual.servicioHospitalId);
+  salaActualId = servicio ? servicio.id : null;
+  salaActualDescripcion = servicio ? servicio.descripcion : 'No asignado';
+
+  habitacionActual = pacienteActual.habitacion || 'N/A';
+
+  document.getElementById('detallePaciente').innerText = `Paciente: ${pacienteActual.nombre} ${pacienteActual.apellido1} ${pacienteActual.apellido2} - Habitación: ${habitacionActual} - Sala Actual: ${salaActualDescripcion}`;
+
+  const select = document.getElementById('nuevaSala');
+  select.innerHTML = '<option selected disabled>Seleccione sala destino</option>';
+  servicios.forEach(s => {
+    const option = document.createElement('option');
+    option.value = s.id;
+    option.textContent = s.descripcion;
+    select.appendChild(option);
+  });
+
+  const modal = new bootstrap.Modal(document.getElementById('modalTraslado'));
+  modal.show();
+}
+
+async function confirmarTraslado() {
+  const nuevoServicioId = parseInt(document.getElementById('nuevaSala').value);
+  if (!nuevoServicioId) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Error',
+      text: 'Debe seleccionar una sala destino.',
+    });
+    return;
+  }
+  if (nuevoServicioId === salaActualId) {
+    Swal.fire({
+      icon: 'info',
+      title: 'Atención',
+      text: 'El paciente ya se encuentra en esa sala.',
+    });
+    return;
+  }
+
+  try {
+    // Obtener ruta detallada
+    const rutaRes = await fetch(`/api/traslados/ruta/detallada?origen=${salaActualId}&destino=${nuevoServicioId}`);
+    if (!rutaRes.ok) {
+      throw new Error('No se pudo obtener la ruta detallada');
+    }
+    const ruta = await rutaRes.json();
+
+    // Obtener colaboradores del servicio actual
+    const colaboradoresRes = await fetch('/api/estructura/colaboradores/listar');
+    if (!colaboradoresRes.ok) {
+      throw new Error('No se pudo obtener la lista de colaboradores');
+    }
+    const colaboradores = await colaboradoresRes.json();
+
+    // Filtrar colaboradores por servicio actual (areaServicio == salaActualId)
+    const colaboradoresDelServicio = colaboradores.filter(colab => colab.areaServicio === salaActualId);
+    let colaboradorResponsable = colaboradoresDelServicio.length > 0 ? colaboradoresDelServicio[0] : null;
+    let nombreColaborador = colaboradorResponsable ? colaboradorResponsable.nombre : 'Colaborador asignado';
+
+    // Mostrar ruta con colaborador en Swal y confirmación
+    const rutaHtml = ruta.map(paso => `<li>${paso}</li>`).join('');
+    const result = await Swal.fire({
+      title: 'Ruta de traslado',
+      html: `<p><strong>${nombreColaborador}</strong> traslada al paciente por:</p><ol style="text-align: left;">${rutaHtml}</ol>`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar traslado',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      // Modificar paciente con nuevo servicioHospitalId
+      pacienteActual.servicioHospitalId = nuevoServicioId;
+      const response = await fetch('/api/estructura/pacientes/modificar', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pacienteActual)
       });
 
-      const modal = bootstrap.Modal.getInstance(document.getElementById('modalTraslado'));
-      modal.hide();
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Traslado exitoso',
+          text: `Paciente ${pacienteActual.nombre} trasladado a ${servicios.find(s => s.id === nuevoServicioId).descripcion}.`
+        });
 
-      // Mostrar resultado con fade-in
-      const resultadoDiv = document.getElementById('resultado');
-      resultadoDiv.style.opacity = 0;
-      resultadoDiv.innerText = `Último traslado: ${pacienteActual} → ${nuevaSala}`;
-      let opacity = 0;
-      const fadeIn = setInterval(() => {
-        if (opacity >= 1) clearInterval(fadeIn);
-        resultadoDiv.style.opacity = opacity;
-        opacity += 0.05;
-      }, 30);
+        // Actualizar UI para reflejar cambio de sala
+        await recargarPacientes();
+
+        // Cerrar modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalTraslado'));
+        modal.hide();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo completar el traslado.'
+        });
+      }
     }
-  </script>
+  } catch (error) {
+    console.error('Error en traslado:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al procesar el traslado.'
+    });
+  }
+}
+
+async function recargarPacientes() {
+  try {
+    const pacientesRes = await fetch('/api/estructura/pacientes/listar');
+    pacientes = await pacientesRes.json();
+
+    const container = document.getElementById('pacientes-container');
+    container.innerHTML = '';
+
+    pacientes.forEach((paciente, index) => {
+      const servicio = servicios.find(s => s.id === paciente.servicioHospitalId);
+      const descripcionServicio = servicio ? servicio.descripcion : 'No asignado';
+      const habitacion = paciente.habitacion || `Habitación ${index + 100}`;
+
+      const card = document.createElement('div');
+      card.className = 'col';
+      card.innerHTML = `
+        <div class="card shadow-sm h-100 text-center">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="card-title text-primary fw-bold">${paciente.nombre} ${paciente.apellido1} ${paciente.apellido2}</h5>
+              <p class="card-text mb-1"><strong>Habitación:</strong> ${habitacion}</p>
+              <p class="card-text"><strong>Sala Actual:</strong> ${descripcionServicio}</p>
+            </div>
+            <button class="btn btn-primary align-self-start mt-3 mx-auto" onclick="abrirModal(${paciente.cedula})">
+              <i class="bi bi-arrow-right-circle-fill me-2"></i>Trasladar
+            </button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error('Error recargando pacientes:', error);
+  }
+}
+</script>
         </body>
 
     </html>

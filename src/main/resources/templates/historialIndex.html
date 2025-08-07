@@ -10,6 +10,7 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="icon" href="/img/logo.png">
     </head>
     <body
         style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
@@ -18,48 +19,94 @@
         <div class="container my-5">
             <h2 class="text-center mb-4 fw-bold text-primary">MediTech - Sistema
                 de Gestión Hospitalaria</h2>
-            <div class="row row-cols-1 row-cols-md-2 g-4">
+            <!-- Contenedor de cards de pacientes -->
+            <div class="row" id="pacientes-container"></div>
 
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-lg text-center border-0 rounded-4 hover-shadow"
-                        style="background-color: #fff3e0;">
-                        <div class="card-body bg-light rounded-4">
-                            <i
-                                class="bi bi-journal-medical display-4 text-warning"></i>
-                            <h5 class="card-title mt-3">Gestión de
-                                historial</h5>
-                            <p class="card-text">Acá puedes ver, enviar por
-                                correo o
-                                imprimir historiales médicos.</p>
-                            <a href="#"
-                                class="btn btn-outline-warning rounded-pill px-4">Ingresar</a>
+            <!-- Modal para historial médico -->
+            <div class="modal fade" id="modalHistorialPaciente" tabindex="-1"
+                aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Historial
+                                Médico del Paciente</h5>
+                            <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body" id="contenidoHistorial">
+                            <!-- Aquí se inyecta el historial -->
                         </div>
                     </div>
                 </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-lg text-center border-0 rounded-4 hover-shadow"
-                        style="background-color: #f3e5f5;">
-                        <div class="card-body bg-light rounded-4">
-                            <i
-                                class="bi bi-file-earmark-medical-fill display-4 text-primary"></i>
-                            <h5 class="card-title mt-3">Buscar Historial de
-                                Pacientes Por Médico</h5>
-                            <p class="card-text">Acá puedes gestionar todos los
-                                historiales médicos
-                                por médicos.
-                            </p>
-                            <a href="#"
-                                class="btn btn-outline-primary rounded-pill px-4">Ingresar</a>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
+        <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const pacientesRes = await fetch('/api/estructura/pacientes/listar');
+                const pacientes = await pacientesRes.json();
+                const container = document.getElementById("pacientes-container");
+
+                if (pacientes.length === 0) {
+                    container.innerHTML = "<p class='text-center text-muted'>No hay pacientes registrados.</p>";
+                    return;
+                }
+
+                pacientes.forEach(paciente => {
+                    const card = document.createElement("div");
+                    card.className = "col-md-4 mb-4";
+                    card.innerHTML = `
+                        <div class="card h-100 shadow border-0">
+                            <div class="card-body">
+                                <h5 class="card-title">${paciente.nombre} ${paciente.apellido1}</h5>
+                                <p class="card-text"><strong>Cédula:</strong> ${paciente.cedula}</p>
+                                <button class="btn btn-outline-primary btn-sm" onclick="mostrarHistorial(${paciente.cedula})">
+                                    Ver Historial
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Error cargando pacientes:", error);
+            }
+        });
+
+        async function mostrarHistorial(cedula) {
+            try {
+                const res = await fetch(`/api/historial/paciente/${cedula}`);
+                const historial = await res.json();
+                const contenedor = document.getElementById("contenidoHistorial");
+                contenedor.innerHTML = "";
+
+                if (historial.length === 0) {
+                    contenedor.innerHTML = "<p class='text-center text-muted'>Este paciente no tiene historial médico.</p>";
+                } else {
+                    historial.forEach(item => {
+                        const bloque = document.createElement("div");
+                        bloque.className = "border-bottom mb-3 pb-2";
+                        bloque.innerHTML = `
+                            <p><strong>Fecha:</strong> ${new Date(item.fechaCreacion).toLocaleString()}</p>
+                            <p><strong>Diagnóstico:</strong> ${item.diagnostico}</p>
+                            <p><strong>Tratamiento:</strong> ${item.tratamiento}</p>
+                            <p><strong>Notas:</strong> ${item.notas}</p>
+                        `;
+                        contenedor.appendChild(bloque);
+                    });
+                }
+
+                const modal = new bootstrap.Modal(document.getElementById('modalHistorialPaciente'));
+                modal.show();
+
+            } catch (error) {
+                console.error("Error cargando historial:", error);
+            }
+        }
+        </script>
     </body>
 
 </html>

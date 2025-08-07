@@ -1,0 +1,294 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="ReporteMedico" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="centroNombre" class="java.lang.String"/>
+	<parameter name="centroDireccion" class="java.lang.String"/>
+	<parameter name="pacienteNombre" class="java.lang.String"/>
+	<parameter name="pacienteNacimiento" class="java.lang.String"/>
+	<parameter name="pacienteCedula" class="java.lang.String"/>
+	<parameter name="pacienteSexo" class="java.lang.String"/>
+	<parameter name="antecedentes" class="java.lang.String"/>
+	<parameter name="problemasActuales" class="java.lang.String"/>
+	<parameter name="tratamientos" class="java.lang.String"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="firmaEspecialista" class="java.lang.String"/>
+	<title>
+		<band height="30">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE MÉDICO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="700">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del centro:]]></text>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</topBorder>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="23" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Nombre: " + $P{centroNombre}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<textField>
+				<reportElement x="0" y="45" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Dirección: " + $P{centroDireccion}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="555" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del paciente:]]></text>
+				<box>
+					<topBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</topBorder>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</rightBorder>
+				</box>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="94" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Nombre y apellidos: " + $P{pacienteNombre}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<textField>
+				<reportElement x="0" y="113" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Fecha de nacimiento: " + $P{pacienteNacimiento}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<textField>
+				<reportElement x="0" y="133" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Cédula: " + $P{pacienteCedula}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<textField>
+				<reportElement x="0" y="153" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Género: " + $P{pacienteSexo}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="180" width="555" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Antecedentes personales:]]></text>
+				<box>
+					<topBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</topBorder>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</rightBorder>
+				</box>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="202" width="555" height="60"/>
+				<textFieldExpression><![CDATA[$P{antecedentes}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="270" width="555" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Problemas de salud actuales:]]></text>
+				<box>
+					<topBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</topBorder>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</rightBorder>
+				</box>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="292" width="555" height="60"/>
+				<textFieldExpression><![CDATA[$P{problemasActuales}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="360" width="555" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tratamientos médicos y farmacológicos:]]></text>
+				<box>
+					<topBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</topBorder>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</rightBorder>
+				</box>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="381" width="555" height="60"/>
+				<textFieldExpression><![CDATA[$P{tratamientos}]]></textFieldExpression>
+				<box>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<textField>
+				<reportElement x="0" y="460" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Fecha: " + $P{fecha}]]></textFieldExpression>
+				<box>
+					<topBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</topBorder>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</rightBorder>
+				</box>
+			</textField>
+			<textField>
+				<reportElement x="0" y="480" width="555" height="20"/>
+				<textFieldExpression><![CDATA["Firma y Nº de especialista: " + $P{firmaEspecialista}]]></textFieldExpression>
+				<box>
+					<topBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</topBorder>
+					<leftBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</leftBorder>
+					<bottomBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</bottomBorder>
+					<rightBorder>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</rightBorder>
+				</box>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

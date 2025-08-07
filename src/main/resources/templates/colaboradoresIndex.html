@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MediTech</title>
-        <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
-        <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>MediTech - Colaboradores</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet" />
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="icon" href="/img/logo.png" />
     </head>
     <body
         style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
@@ -22,8 +21,7 @@
                 de Gestión Hospitalaria</h2>
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="text-center mt-4">Administrar
-                        Pacientes</h1>
+                    <h1 class="text-center mt-4">Administrar Colaboradores</h1>
                     <div class="container mt-4">
                         <table
                             class="table table-striped table-bordered table-hover">
@@ -32,187 +30,204 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Cédula</th>
-                                    <th scope="col">Área de
-                                        Servicio</th>
+                                    <th scope="col">Área de Servicio</th>
                                     <th scope="col">Estado</th>
                                     <th scope="col">Administración</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabla-pacientes-body text-center">
-                                <!-- Las filas son insertadas de manera dinamica según los datos disponibles, se cargan mediante un API REST -->
-                                <tr>
-
-                                    <th scope="row">1</th>
-                                    <td class="text-center">Keneth Vargas</td>
-                                    <td class="text-center">305540037</td>
-                                    <td class="text-center">Emergencias</td>
-                                    <td class="text-center"><span
-                                            class="badge text-bg-success">En
-                                            cola</span></td>
-                                    <td class="text-center">
-                                        <button
-                                            class="btn btn-sm btn-warning me-1"
-                                            onclick="modificarPaciente('${cliente.cedula}')">Modificar</button>
-                                        <button class="btn btn-sm btn-danger"
-                                            onclick="eliminarPaciente('${cliente.cedula}', '${cliente.servicio}')">Eliminar</button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td class="text-center">Andres Hernadez</td>
-                                    <td class="text-center">123456789</td>
-                                    <td class="text-center">Cirugia</td>
-                                    <td class="text-center"><span
-                                            class="badge text-bg-success">En
-                                            cola</span></td>
-                                    <td class="text-center">
-                                        <button
-                                            class="btn btn-sm btn-warning me-1"
-                                            onclick="modificarPaciente('${cliente.cedula}')">Modificar</button>
-                                        <button class="btn btn-sm btn-danger"
-                                            onclick="eliminarPaciente('${cliente.cedula}', '${cliente.servicio}')">Eliminar</button>
-                                    </td>
-                                </tr>
-
+                            <tbody id="tabla-colaboradores-body"
+                                class="text-center">
+                                <!-- Filas se cargarán dinámicamente -->
                             </tbody>
-
                         </table>
                     </div>
                 </div>
             </div>
         </div>
 
-    </body>
-    <!--  
-    <script>
-                function cargarPacientes() {
-                    fetch('/api/simulacion/servicios')
-                        .then(response => response.json())
-                        .then(servicios => {
-                            const tbody = document.getElementById('tabla-pacientes-body');
-                            tbody.innerHTML = ''; // Limpiar tabla
+        <script>
+        async function cargarServicios(id) {
+            const res = await fetch('/api/cargar/servicios');
+            const servicios = await res.json();
+            const servicio = servicios.find(serv => serv.id == id);
+            return servicio ? servicio.descripcion : 'Servicio no encontrado';
+        }
 
-                            let contador = 1;
+        async function cargarColaboradores() {
+            try {
+                const response = await fetch('/api/estructura/colaboradores/listar');
+                if (!response.ok) throw new Error('Error al cargar colaboradores');
+                const colaboradores = await response.json();
 
-                            servicios.forEach(servicio => {
-                                fetch(`/api/simulacion/cola/${servicio}`)
-                                    .then(response => response.json())
-                                    .then(clientes => {
-                                        clientes.forEach(cliente => {
-                                            const row = document.createElement('tr');
-                                            row.innerHTML = `
-                                                <th scope="row">${contador++}</th>
-                                                <td>${cliente.nombre}</td>
-                                                <td>${cliente.cedula}</td>
-                                                <td>${cliente.servicio}</td>
-                                                <td><span class="badge text-bg-success">En cola</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-warning me-1" onclick="modificarPaciente('${cliente.cedula}')">Modificar</button>
-                                                    <button class="btn btn-sm btn-danger" onclick="eliminarPaciente('${cliente.cedula}', '${cliente.servicio}')">Eliminar</button>
-                                                </td>
-                                            `;
-                                            tbody.appendChild(row);
-                                        });
-                                    })
-                                    .catch(error => console.error(`Error cargando cola de ${servicio}:`, error));
-                            });
-                        })
-                        .catch(error => console.error('Error al cargar servicios:', error));
+                const tbody = document.getElementById('tabla-colaboradores-body');
+                tbody.innerHTML = ''; // Limpiar tabla
+                let contador = 1;
+                
+
+                for (const colaborador of colaboradores) {
+                    const row = document.createElement('tr');
+                    const descripcion = await cargarServicios(colaborador.areaServicio);
+                    row.innerHTML = `
+                        <th scope="row">${contador++}</th>
+                        <td>${colaborador.nombre}</td>
+                        <td>${colaborador.cedula}</td>
+                        <td>${descripcion}</td>
+                        <td>
+                            <span class="badge ${colaborador.estado ? 'text-bg-success' : 'text-bg-danger'}">
+                                ${colaborador.estado ? 'Activo' : 'Inactivo'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="modificarColaborador('${colaborador.cedula}')">Modificar</button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarColaborador('${colaborador.cedula}')">Eliminar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
                 }
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        }
 
-                function eliminarPaciente(cedula, servicio) {
-                    fetch(`/api/simulacion/eliminar?cedula=${encodeURIComponent(cedula)}&servicio=${encodeURIComponent(servicio)}`, {
+        async function eliminarColaborador(cedula) {
+            const confirmacion = await Swal.fire({
+                title: '¿Está seguro?',
+                text: `Se eliminará el colaborador con cédula ${cedula}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (confirmacion.isConfirmed) {
+                try {
+                    const response = await fetch(`/api/estructura/colaboradores/eliminar/${cedula}`, {
                         method: 'DELETE'
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error('No se pudo eliminar el paciente');
-                        return response.text();
-                    })
-                    .then(mensaje => {
-                        Swal.fire('Eliminado', mensaje, 'success');
-                        cargarPacientes();
-                    })
-                    .catch(error => {
-                        Swal.fire('Error', error.message, 'error');
                     });
+                    if (!response.ok) throw new Error('Error al eliminar colaborador');
+                    const msg = await response.text();
+                    Swal.fire('Eliminado', msg, 'success');
+                    cargarColaboradores();
+                } catch (error) {
+                    Swal.fire('Error', error.message, 'error');
+                }
+            }
+        }
+
+        async function modificarColaborador(cedula) {
+            try {
+                const response = await fetch(`/api/estructura/colaboradores/buscar/${cedula}`);
+                if (!response.ok) throw new Error('Colaborador no encontrado');
+                const colaborador = await response.json();
+
+                const serviciosResp = await fetch('/api/cargar/servicios');
+                const servicios = await serviciosResp.json();
+
+                const selectArea = document.getElementById('mod-area');
+                selectArea.innerHTML = '';
+                servicios.forEach(serv => {
+                    const option = document.createElement('option');
+                    option.value = serv.id;
+                    option.textContent = serv.descripcion;
+                    if (serv.id === colaborador.areaServicio) option.selected = true;
+                    selectArea.appendChild(option);
+                });
+
+                document.getElementById('mod-cedula').value = colaborador.cedula;
+                document.getElementById('mod-nombre').value = colaborador.nombre;
+                document.getElementById('mod-estado').value = colaborador.estado.toString();
+
+                const modal = new bootstrap.Modal(document.getElementById('modalModificarColaborador'));
+                modal.show();
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        }
+
+        // Cargar colaboradores al iniciar la página
+        document.addEventListener('DOMContentLoaded', function () {
+            cargarColaboradores();
+            document.getElementById('formModificarColaborador').addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const cedula = document.getElementById('mod-cedula').value;
+                const nombre = document.getElementById('mod-nombre').value.trim();
+                const areaServicio = parseInt(document.getElementById('mod-area').value);
+                const estado = document.getElementById('mod-estado').value === 'true';
+
+                if (!nombre) {
+                    Swal.fire('Error', 'El nombre no puede estar vacío', 'error');
+                    return;
                 }
 
-                function modificarPaciente(cedula) {
-                    fetch('/api/simulacion/servicios')
-                        .then(res => res.json())
-                        .then(servicios => {
-                            let encontrado = null;
-                            const promesas = servicios.map(servicio =>
-                                fetch(`/api/simulacion/cola/${servicio}`)
-                                    .then(res => res.json())
-                                    .then(clientes => {
-                                        clientes.forEach(cliente => {
-                                            if (cliente.cedula === cedula) encontrado = cliente;
-                                        });
-                                    })
-                            );
-                            Promise.all(promesas).then(() => {
-                                if (!encontrado) {
-                                    Swal.fire('No encontrado', 'Paciente no encontrado para modificar', 'error');
-                                    return;
-                                }
+                try {
+                    const res = await fetch(`/api/estructura/colaboradores/modificar/${cedula}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ cedula, nombre, areaServicio, estado })
+                    });
 
-                                Swal.fire({
-                                    title: 'Modificar Paciente',
-                                    html: `
-                                        <input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${encontrado.nombre}">
-                                        <input id="swal-cedula" class="swal2-input" placeholder="Cédula" value="${encontrado.cedula}" disabled>
-                                        <select id="swal-servicio" class="swal2-select" disabled>
-                                            ${servicios.map(serv => `
-                                                <option value="${serv}" ${encontrado.servicio === serv ? 'selected' : ''}>${serv}</option>
-                                            `).join('')}
-                                        </select>
-                                    `,
-                                    focusConfirm: false,
-                                    preConfirm: () => {
-                                        const nombre = document.getElementById('swal-nombre').value.trim();
-                                        const cedula = document.getElementById('swal-cedula').value.trim();
-                                        const servicio = document.getElementById('swal-servicio').value;
+                    if (!res.ok) throw new Error('Error al modificar colaborador');
 
-                                        if (!servicio) {
-                                            Swal.showValidationMessage("Debe seleccionar un servicio");
-                                            return false;
-                                        }
-
-                                        return { nombre, cedula, servicio };
-                                    }
-                                })
-                                .then((result) => {
-                                    if (result.isConfirmed) {
-                                        const pacienteModificado = result.value;
-                                        console.log("Datos enviados al backend:", pacienteModificado);
-                                        fetch('/api/simulacion/modificar', {
-                                            method: 'PUT',
-                                            headers: {
-                                                'Content-Type': 'application/json'
-                                            },
-                                            body: JSON.stringify(pacienteModificado)
-                                        })
-                                        .then(res => {
-                                            if (!res.ok) throw new Error('Error al modificar paciente');
-                                            return res.text();
-                                        })
-                                        .then(msg => {
-                                            Swal.fire('Modificado', msg, 'success');
-                                            cargarPacientes();
-                                        })
-                                        .catch(err => {
-                                            Swal.fire('Error', err.message, 'error');
-                                        });
-                                    }
-                                });
-                            });
-                        });
+                    const msg = await res.text();
+                    Swal.fire('Modificado', msg, 'success');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modalModificarColaborador'));
+                    modal.hide();
+                    cargarColaboradores();
+                } catch (error) {
+                    Swal.fire('Error', error.message, 'error');
                 }
-
-                // Llamar cuando se cargue la página
-                document.addEventListener('DOMContentLoaded', cargarPacientes);
-            </script>
--->
+            });
+        });
+    </script>
+        <!-- Modal de Modificación de Colaborador -->
+        <div class="modal fade" id="modalModificarColaborador" tabindex="-1"
+            aria-labelledby="modalModificarColaboradorLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="formModificarColaborador">
+                        <div class="modal-header">
+                            <h5 class="modal-title"
+                                id="modalModificarColaboradorLabel">Modificar
+                                Colaborador</h5>
+                            <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="mod-cedula" />
+                            <div class="mb-3">
+                                <label for="mod-nombre"
+                                    class="form-label">Nombre</label>
+                                <input type="text" class="form-control"
+                                    id="mod-nombre" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="mod-area" class="form-label">Área de
+                                    Servicio</label>
+                                <select class="form-select" id="mod-area"
+                                    required></select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="mod-estado"
+                                    class="form-label">Estado</label>
+                                <select class="form-select" id="mod-estado">
+                                    <option value="true">Activo</option>
+                                    <option value="false">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit"
+                                class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

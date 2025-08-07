@@ -10,6 +10,8 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+        <link rel="icon" href="/img/logo.png">
     </head>
     <body
         style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
@@ -119,7 +121,7 @@
                             <h5 class="card-title mt-3">Atender Paciente</h5>
                             <p class="card-text">Atención de
                                 pacientes.</p>
-                            <a href="#"
+                            <a href="/atender_paciente"
                                 class="btn btn-outline-dark rounded-pill px-4">Ingresar</a>
                         </div>
                     </div>
@@ -128,80 +130,8 @@
             </div>
         </div>
         <hr>
-        <div class="row">
-            <div class="col text-center mb-4">
-                <canvas id="myChart" width="400" height="300"
-                    style="max-width: 400px; margin: 0 auto;"></canvas>
-            </div>
-            <div class="col text-center mb-4">
-                <canvas id="myChart2" width="500" height="370"
-                    style="max-width: 500px; margin: 0 auto;"></canvas>
-            </div>
-        </div>
+
     </body>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var xValues = ["Críticos", "Graves", "Urgentes", "Estables", "Observación"];
-        var yValues = [12, 19, 8, 25, 6];
-        var barColors = ["#d9534f", "#f0ad4e", "#5bc0de", "#5cb85c", "#292b2c"];
 
-        new Chart("myChart", {
-            type: "pie",
-            data: {
-                labels: xValues,
-                datasets: [{
-                    backgroundColor: barColors,
-                    data: yValues
-                }]
-            },
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: "Pacientes Internados por Estado (" + new Date().toLocaleDateString() + ") - Cantidad de Pacientes: " + yValues.reduce((a, b) => a + b, 0)
-                    }
-                }
-            }
-        });
-        
-
-        var services = ["Consulta Externa", "Emergencias", "Farmacia", "Laboratorio", "Pediatría"];
-        var patientsCount = [25, 15, 30, 10, 20];
-        var colors = ["#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b"];
-
-        new Chart("myChart2", {
-            type: "bar",
-            data: {
-                labels: services,
-                datasets: [{
-                    label: "Cantidad de Pacientes",
-                    data: patientsCount,
-                    backgroundColor: colors,
-                    borderRadius: 8,
-                    barThickness: 25
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                plugins: {
-                    title: {
-                        display: true,
-                        text: "Cantidad de Pacientes por Servicios"
-                    },
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 5
-                        }
-                    }
-                }
-            }
-        });
-
-    </script>
 </html>

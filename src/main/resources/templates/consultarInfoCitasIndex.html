@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MediTech</title>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="icon" href="/img/logo.png">
+    </head>
+    <body
+        style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
+        <div th:replace="fragments/navbar/navbar :: navbar"></div>
+
+        <div class="container my-5">
+            <h2 class="text-center mb-4 fw-bold text-primary">MediTech - Sistema
+                de Gestión Hospitalaria</h2>
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" id="cedulaInput" class="form-control"
+                            placeholder="Ingrese la cédula del paciente">
+                        <button class="btn btn-primary"
+                            id="btnBuscarCita">Buscar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Modal Resultado de Búsqueda -->
+        <div class="modal fade" id="modalResultadoCita" tabindex="-1"
+            aria-labelledby="modalResultadoCitaLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 shadow">
+                    <div
+                        class="modal-header bg-primary text-white rounded-top-4">
+                        <h5 class="modal-title"
+                            id="modalResultadoCitaLabel">Resultado de
+                            Búsqueda</h5>
+                        <button type="button" class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body" id="contenidoCita">
+                        <!-- Contenido dinámico -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+document.getElementById("btnBuscarCita").addEventListener("click", async function() {
+    const cedula = document.getElementById("cedulaInput").value.trim();
+    const contenido = document.getElementById("contenidoCita");
+
+    if (!cedula) {
+        contenido.innerHTML = `<p class="text-danger">Por favor, ingrese una cédula válida.</p>`;
+        const modal = new bootstrap.Modal(document.getElementById('modalResultadoCita'));
+        modal.show();
+        return;
+    }
+
+    try {
+        const resp = await fetch(`/api/estructura/citas/buscar/${cedula}`);
+        if (!resp.ok) {
+            throw new Error("No se encontraron citas.");
+        }
+
+        const citas = await resp.json();
+
+        if (citas.length === 0) {
+            contenido.innerHTML = `<p class="text-danger">No hay citas registradas para la cédula ingresada.</p>`;
+        } else {
+            contenido.innerHTML = citas.map(c => `
+                <div class="mb-3 p-3 border rounded">
+                    <p><strong>Paciente:</strong> ${c.paciente}</p>
+                    <p><strong>Cédula:</strong> ${c.paciente}</p>
+                    <p><strong>Fecha:</strong> ${new Date(c.fechaCita).toLocaleDateString()}</p>
+                    <p><strong>Hora:</strong> ${new Date(c.fechaCita).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                    <p><strong>Médico:</strong> ${c.medico}</p>
+                    <p><strong>Área de Servicio:</strong> ${c.areaServicio}</p>
+                    <p><strong>Motivo:</strong> ${c.motivoConsulta}</p>
+                    <p><strong>Dictamen Médico:</strong> ${c.dictamenMedico || 'Pendiente'}</p>
+                    <p><strong>Estado:</strong> <span class="badge bg-success">${c.estado ? 'Activa' : 'Inactiva'}</span></p>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        contenido.innerHTML = `<p class="text-danger">${e.message}</p>`;
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('modalResultadoCita'));
+    modal.show();
+});
+        </script>
+    </body>
+
+</html>

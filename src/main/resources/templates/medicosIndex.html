@@ -10,6 +10,8 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="icon" href="/img/logo.png">
     </head>
     <body
         style="background: linear-gradient(to right, #e0f7fa, #ffffff); min-height: 100vh;">
@@ -32,7 +34,7 @@
                 <!-- Tarjetas de médicos -->
             </div>
 
-            <!-- Modal -->
+            <!-- Modal Registro Médico -->
             <div class="modal fade" id="modalMedico" tabindex="-1"
                 aria-labelledby="modalMedicoLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -54,6 +56,7 @@
                                         pattern="^\d{9}$"
                                         maxlength="9"
                                         title="La cédula debe contener exactamente 9 dígitos numéricos"
+                                        autocomplete="off"
                                         required>
                                 </div>
                                 <div class="mb-3">
@@ -63,35 +66,58 @@
                                         id="nombre"
                                         pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"
                                         title="El nombre debe contener solo letras y espacios"
+                                        autocomplete="off"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="apellidos"
+                                        class="form-label">Apellidos</label>
+                                    <input type="text" class="form-control"
+                                        id="apellidos"
+                                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"
+                                        title="Los apellidos deben contener solo letras y espacios"
+                                        autocomplete="off"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fechaNacimiento"
+                                        class="form-label">Fecha de
+                                        Nacimiento</label>
+                                    <input type="date" class="form-control"
+                                        id="fechaNacimiento" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="especialidad"
+                                        class="form-label">Especialidad</label>
+                                    <input type="text" class="form-control"
+                                        id="especialidad"
+                                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"
+                                        title="La especialidad debe contener solo letras y espacios"
+                                        autocomplete="off"
                                         required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="sexo"
-                                        class="form-label">Sexo</label>
+                                        class="form-label">Genero</label>
                                     <select class="form-select" id="sexo"
                                         required>
                                         <option value selected
                                             disabled>Seleccione</option>
-                                        <option>Masculino</option>
-                                        <option>Femenino</option>
-                                        <option>Otro</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="O">Otro</option>
                                     </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edad"
-                                        class="form-label">Edad</label>
-                                    <input type="number" class="form-control"
-                                        id="edad"
-                                        min="18" max="100"
-                                        title="Edad válida entre 18 y 100 años"
-                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="servicio"
                                         class="form-label">Servicio que
                                         brinda</label>
-                                    <input type="text" class="form-control"
-                                        id="servicio" required>
+                                    <select class="form-select" id="servicio"
+                                        required>
+                                        <option value disabled
+                                            selected>Seleccione un
+                                            servicio</option>
+                                    </select>
                                 </div>
                                 <!-- El campo "Activo" se elimina, los médicos se registran activos por defecto -->
                             </div>
@@ -106,132 +132,260 @@
                 </div>
             </div>
 
+            <!-- Modal Modificar Médico -->
+            <div class="modal fade" id="modalModificarMedico" tabindex="-1"
+                aria-labelledby="modalModificarMedicoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content shadow">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title"
+                                id="modalModificarMedicoLabel">Modificar
+                                Médico</h5>
+                            <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"></button>
+                        </div>
+                        <form id="formModificarMedico">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="modCedula"
+                                        class="form-label">Cédula</label>
+                                    <input type="text" class="form-control"
+                                        id="modCedula"
+                                        pattern="^\d{9}$"
+                                        maxlength="9"
+                                        title="La cédula debe contener exactamente 9 dígitos numéricos"
+                                        autocomplete="off"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modNombre"
+                                        class="form-label">Nombre</label>
+                                    <input type="text" class="form-control"
+                                        id="modNombre"
+                                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"
+                                        title="El nombre debe contener solo letras y espacios"
+                                        autocomplete="off"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modApellidos"
+                                        class="form-label">Apellidos</label>
+                                    <input type="text" class="form-control"
+                                        id="modApellidos"
+                                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"
+                                        title="Los apellidos deben contener solo letras y espacios"
+                                        autocomplete="off"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modFechaNacimiento"
+                                        class="form-label">Fecha de
+                                        Nacimiento</label>
+                                    <input type="date" class="form-control"
+                                        id="modFechaNacimiento" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modEspecialidad"
+                                        class="form-label">Especialidad</label>
+                                    <input type="text" class="form-control"
+                                        id="modEspecialidad"
+                                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"
+                                        title="La especialidad debe contener solo letras y espacios"
+                                        autocomplete="off"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modSexo"
+                                        class="form-label">Genero</label>
+                                    <select class="form-select" id="modSexo"
+                                        required>
+                                        <option value selected
+                                            disabled>Seleccione</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="O">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modServicio"
+                                        class="form-label">Servicio que
+                                        brinda</label>
+                                    <select class="form-select" id="modServicio"
+                                        required>
+                                        <option value disabled
+                                            selected>Seleccione un
+                                            servicio</option>
+                                    </select>
+                                </div>
+                                <!-- El campo "Activo" se elimina, los médicos se registran activos por defecto -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit"
+                                    class="btn btn-success">Guardar
+                                    Cambios</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <script>
-            const form = document.getElementById('formMedico');
-            let editMode = false;
-            let medicoEditando = null;  
-            const cardContainer = document.getElementById('cardContainer');
+    const form = document.getElementById('formMedico');
+    const formModificar = document.getElementById('formModificarMedico');
+    const cardContainer = document.getElementById('cardContainer');
 
-            function crearCard(medico) {
-                const card = document.createElement('div');
-                card.className = 'col-md-4 mb-4';
+    // Cargar servicios dinámicamente
+    async function cargarServicios() {
+        const res = await fetch('/api/cargar/servicios');
+        const servicios = await res.json();
+        const selects = [document.getElementById('servicio'), document.getElementById('modServicio')];
+        selects.forEach(select => {
+            select.innerHTML = '<option value disabled selected>Seleccione un servicio</option>';
+            servicios.forEach(servicio => {
+                const option = document.createElement('option');
+                option.value = servicio.id;
+                option.textContent = servicio.descripcion;
+                select.appendChild(option);
+            });
+        });
+    }
 
-                let titulo = 'Dr.';
-                if (medico.sexo && medico.sexo.toLowerCase() === 'femenino') {
-                    titulo = 'Dra.';
-                }
+    async function cargarServiciosModal(id) {
+        const res = await fetch('/api/cargar/servicios');
+        const servicios = await res.json();
+        const servicio = servicios.find(serv => serv.id == id);
+        return servicio ? servicio.descripcion : 'Servicio no encontrado';
+    }
 
-                card.innerHTML = `
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">${titulo} ${medico.nombre}</h5>
-                            <p class="card-text mb-1"><strong>Cédula:</strong> ${medico.cedula}</p>
-                            <p class="card-text mb-1"><strong>Sexo:</strong> ${medico.sexo}</p>
-                            <p class="card-text mb-1"><strong>Edad:</strong> ${medico.edad}</p>
-                            <p class="card-text mb-1"><strong>Servicio:</strong> ${medico.servicio}</p>
-                            <span class="badge ${medico.activo ? 'bg-success' : 'bg-secondary'}">
-                                ${medico.activo ? 'Activo' : 'Inactivo'}
-                            </span>
-                            <div class="mt-3 d-flex justify-content-between">
-                                <button class="btn btn-sm btn-outline-primary" onclick="modificarMedico(this)">Modificar</button>
-                                <button class="btn btn-sm ${medico.activo ? 'btn-outline-danger' : 'btn-outline-success'}" onclick="toggleEstadoMedico(this)">
-                                    ${medico.activo ? 'Desactivar' : 'Activar'}
-                                </button>
-                            </div>
-                        </div>
+    // Crear card
+    async function crearCard(medico) {
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-4';
+
+        let titulo = 'Dr.';
+        if (medico.genero.toLowerCase() === 'f') titulo = 'Dra.';
+
+        const nacimiento = new Date(medico.fechaNacimiento);
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const m = hoy.getMonth() - nacimiento.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
+
+        let generoStr = 'Otro';
+        if (medico.genero.toLowerCase() === 'm') generoStr = 'Masculino';
+        else if (medico.genero.toLowerCase() === 'f') generoStr = 'Femenino';
+
+        const descripcion = await cargarServiciosModal(medico.servicioHospitalId);
+
+        card.innerHTML = `
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">${titulo} ${medico.nombre} ${medico.apellidos}</h5>
+                    <p class="card-text mb-1"><strong>Cédula:</strong> ${medico.cedula}</p>
+                    <p class="card-text mb-1"><strong>Género:</strong> ${generoStr}</p>
+                    <p class="card-text mb-1"><strong>Edad:</strong> ${edad} años</p>
+                    <p class="card-text mb-1"><strong>Especialidad:</strong> ${medico.especialidad}</p>
+                    <p class="card-text mb-1"><strong>Servicio:</strong> ${descripcion}</p>
+                    <div class="mt-3 d-flex justify-content-between">
+                        <button class="btn btn-sm btn-outline-primary" onclick="abrirModalModificar(${medico.cedula})">Modificar</button>
                     </div>
-                `;
-                cardContainer.appendChild(card);
-            }
+                </div>
+            </div>
+        `;
+        cardContainer.appendChild(card);
+    }
 
-            form.addEventListener('submit', function (e) {
-            e.preventDefault();
+    // Listar médicos
+    async function listarMedicos() {
+        const res = await fetch('/api/estructura/medicos/listar');
+        const medicos = await res.json();
+        cardContainer.innerHTML = '';
+        for (const medico of medicos) {
+            await crearCard(medico);
+        }
+    }
 
-            const medico = {
-                cedula: document.getElementById('cedula').value,
-                nombre: document.getElementById('nombre').value,
-                sexo: document.getElementById('sexo').value,
-                edad: document.getElementById('edad').value,
-                servicio: document.getElementById('servicio').value,
-                activo: true
-            };
+    // Agregar médico
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const medico = {
+            cedula: parseInt(document.getElementById('cedula').value),
+            nombre: document.getElementById('nombre').value,
+            apellidos: document.getElementById('apellidos').value,
+            genero: document.getElementById('sexo').value,
+            especialidad: document.getElementById('especialidad').value,
+            fechaNacimiento: document.getElementById('fechaNacimiento').value,
+            servicioHospitalId: document.getElementById('servicio').value
+        };
 
-            if (editMode && medicoEditando) {
-                let titulo = 'Dr.';
-                if (medico.sexo.toLowerCase() === 'femenino') {
-                    titulo = 'Dra.';
-                }
-
-                const cardBody = medicoEditando.querySelector('.card-body');
-                cardBody.querySelector('.card-title').textContent = `${titulo} ${medico.nombre}`;
-                cardBody.querySelector('.card-text:nth-child(2)').innerHTML = `<strong>Cédula:</strong> ${medico.cedula}`;
-                cardBody.querySelector('.card-text:nth-child(3)').innerHTML = `<strong>Sexo:</strong> ${medico.sexo}`;
-                cardBody.querySelector('.card-text:nth-child(4)').innerHTML = `<strong>Edad:</strong> ${medico.edad}`;
-                cardBody.querySelector('.card-text:nth-child(5)').innerHTML = `<strong>Servicio:</strong> ${medico.servicio}`;
-                
-                editMode = false;
-                medicoEditando = null;
-            } else {
-                crearCard(medico);
-            }
-            form.reset();
-            const modal = bootstrap.Modal.getInstance(document.getElementById('modalMedico'));
-            modal.hide();
+        await fetch('/api/estructura/medicos/agregar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(medico)
         });
 
-            const medicosFake = [
-                { cedula: '123456789', nombre: 'Ana Ramírez', sexo: 'Femenino', edad: 42, servicio: 'Pediatría', activo: true },
-                { cedula: '987654321', nombre: 'Carlos Méndez', sexo: 'Masculino', edad: 50, servicio: 'Cardiología', activo: true },
-                { cedula: '456789123', nombre: 'Sofía León', sexo: 'Femenino', edad: 35, servicio: 'Ginecología', activo: false }
-            ];
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalMedico'));
+        modal.hide();
+        form.reset();
+        listarMedicos();
+    });
 
-            medicosFake.forEach(crearCard);
-
-            // Función para activar/desactivar médico dinámicamente
-            function toggleEstadoMedico(button) {
-                const cardBody = button.closest('.card-body');
-                const badge = cardBody.querySelector('.badge');
-
-                const esActivo = badge.textContent.trim() === 'Activo';
-
-                if (esActivo) {
-                    badge.className = 'badge bg-secondary';
-                    badge.textContent = 'Inactivo';
-                    button.textContent = 'Activar';
-                    button.classList.remove('btn-outline-danger');
-                    button.classList.add('btn-outline-success');
-                } else {
-                    badge.className = 'badge bg-success';
-                    badge.textContent = 'Activo';
-                    button.textContent = 'Desactivar';
-                    button.classList.remove('btn-outline-success');
-                    button.classList.add('btn-outline-danger');
-                }
-            }
-
-            // Función para modificar médico (aún no implementada)
-            function modificarMedico(button) {
-            const card = button.closest('.card');
-            const cedula = card.querySelector('.card-text:nth-child(2)').textContent.split(': ')[1];
-            const nombre = card.querySelector('.card-title').textContent.replace(/^(Dr\.|Dra\.)\s*/, '');
-            const sexo = card.querySelector('.card-text:nth-child(3)').textContent.split(': ')[1];
-            const edad = card.querySelector('.card-text:nth-child(4)').textContent.split(': ')[1];
-            const servicio = card.querySelector('.card-text:nth-child(5)').textContent.split(': ')[1];
-
-            document.getElementById('cedula').value = cedula;
-            document.getElementById('nombre').value = nombre;
-            document.getElementById('sexo').value = sexo;
-            document.getElementById('edad').value = edad;
-            document.getElementById('servicio').value = servicio;
-
-            editMode = true;
-            medicoEditando = card;
-
-            const modal = new bootstrap.Modal(document.getElementById('modalMedico'));
-            modal.show();
+    // Abrir modal y cargar datos
+    async function abrirModalModificar(cedula) {
+        const res = await fetch(`/api/estructura/medicos/buscar/${cedula}`);
+        if (!res.ok) {
+            alert('Error al buscar médico');
+            return;
         }
-        </script>
+
+        const medico = await res.json();
+        document.getElementById('modCedula').value = medico.cedula;
+        document.getElementById('modNombre').value = medico.nombre;
+        document.getElementById('modApellidos').value = medico.apellidos;
+        document.getElementById('modFechaNacimiento').value = medico.fechaNacimiento.split('T')[0];
+        document.getElementById('modEspecialidad').value = medico.especialidad;
+        document.getElementById('modSexo').value = medico.genero;
+        document.getElementById('modServicio').value = medico.servicioHospitalId;
+
+        const modal = new bootstrap.Modal(document.getElementById('modalModificarMedico'));
+        modal.show();
+    }
+
+    // Modificar médico
+    formModificar.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const medico = {
+            cedula: parseInt(document.getElementById('modCedula').value),
+            nombre: document.getElementById('modNombre').value,
+            apellidos: document.getElementById('modApellidos').value,
+            genero: document.getElementById('modSexo').value,
+            especialidad: document.getElementById('modEspecialidad').value,
+            fechaNacimiento: document.getElementById('modFechaNacimiento').value,
+            servicioHospitalId: document.getElementById('modServicio').value
+        };
+
+        await fetch('/api/estructura/medicos/modificar', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(medico)
+        });
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalModificarMedico'));
+        modal.hide();
+        formModificar.reset();
+        listarMedicos();
+    });
+
+    // Carga inicial
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarServicios();
+        listarMedicos();
+    });
+</script>
     </body>
 
 </html>
