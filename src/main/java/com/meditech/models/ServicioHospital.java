@@ -2,14 +2,6 @@ package com.meditech.models;
 
 public class ServicioHospital {
 
-    public ServicioHospital() {
-        // Constructor por defecto necesario para JPA
-        // Este constructor es requerido por JPA para crear instancias de la entidad
-        // sin necesidad de pasar parámetros.
-        // No es necesario inicializar los campos aquí, ya que JPA los manejará.
-        // Si se desea, se pueden inicializar con valores por defecto.
-    }
-
     public ServicioHospital(int id, String descripcion, String ubicacion, boolean activo) {
         this.id = id;
         this.descripcion = descripcion;

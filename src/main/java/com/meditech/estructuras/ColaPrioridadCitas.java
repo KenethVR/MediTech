@@ -22,7 +22,10 @@ public class ColaPrioridadCitas {
     }
 
     public List<Citas> listarOrdenadas() {
-        return new ArrayList<>(cola);
+        List<Citas> ordenadas = new ArrayList<>(cola);
+        ordenadas.sort(Comparator.comparingInt((Citas c) -> c.getUrgenciaClinica().getPrioridad())
+                .thenComparing(Citas::getFechaCita));
+        return ordenadas;
     }
 
     public List<Citas> buscarPorCedula(int cedula) {
@@ -61,5 +64,9 @@ public class ColaPrioridadCitas {
             }
         }
         return true;
+    }
+
+    public Citas atenderSiguiente() {
+        return cola.poll(); // Devuelve y elimina la cita con mayor prioridad
     }
 }

@@ -6,14 +6,6 @@ import com.meditech.estructuras.UrgenciaClinica;
 
 public class Citas {
 
-    public Citas() {
-        // Constructor por defecto necesario para JPA
-        // Este constructor es requerido por JPA para crear instancias de la entidad
-        // sin necesidad de pasar parámetros.
-        // No es necesario inicializar los campos aquí, ya que JPA los manejará.
-        // Si se desea, se pueden inicializar con valores por defecto.
-    }
-
     public Citas(int id, String motivoConsulta, String dictamenMedico, boolean estado, LocalDateTime fechaCita,
             int paciente, int medico, int areaServicio, UrgenciaClinica urgenciaClinica) {
         this.id = id;
