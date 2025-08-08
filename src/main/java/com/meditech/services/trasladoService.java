@@ -30,22 +30,40 @@ public class trasladoService {
         servicioNombres.put(6, "Oncología");
         servicioNombres.put(7, "Traumatología");
         // Agrega conexiones entre servicios con pesos y descripciones de pasillos
-        grafo.agregarConexion(0, 1, 5, "Pasillo A – Entrada principal a Cardiología"); // Ninguno -> Cardiología
-        grafo.agregarConexion(0, 2, 3, "Pasillo B – Entrada principal a Neurología"); // Ninguno -> Neurología
-        grafo.agregarConexion(0, 3, 4, "Pasillo C – Entrada principal a Pediatría"); // Ninguno -> Pediatría
-        grafo.agregarConexion(0, 4, 6, "Pasillo D – Entrada principal a Ginecología"); // Ninguno -> Ginecología
-        grafo.agregarConexion(0, 5, 7, "Pasillo E – Entrada principal a Radiología"); // Ninguno -> Radiología
-        grafo.agregarConexion(0, 6, 8, "Pasillo F – Entrada principal a Oncología"); // Ninguno -> Oncología
-        grafo.agregarConexion(0, 7, 2, "Pasillo G – Entrada principal a Traumatología"); // Ninguno -> Traumatología
-        grafo.agregarConexion(1, 3, 5, "Pasillo A – Cardiología a Pediatría"); // Cardiología -> Pediatría
-        grafo.agregarConexion(1, 7, 2, "Pasillo B – Zona de Diagnóstico"); // Cardiología -> Traumatología
-        grafo.agregarConexion(1, 2, 4, "Pasillo A – Conexión principal"); // Cardiología -> Neurología
-        grafo.agregarConexion(2, 4, 3, "Ascensor este – Piso 3 a 4"); // Neurología -> Ginecología
-        grafo.agregarConexion(3, 1, 5, "Pasillo C – Infantil a Cardiología"); // Pediatría -> Cardiología
-        grafo.agregarConexion(3, 6, 2, "Pasillo D – Área infantil"); // Pediatría -> Oncología
-        grafo.agregarConexion(4, 5, 6, "Pasillo E – Diagnóstico por imagen"); // Ginecología -> Radiología
-        grafo.agregarConexion(6, 5, 3, "Pasillo F – Tratamientos avanzados"); // Oncología -> Radiología
-        grafo.agregarConexion(7, 3, 4, "Pasillo G – Urgencias a Pediatría"); // Traumatología -> Pediatría
+        grafo.agregarConexion(0, 1, 5, "Pasillo A – Entrada entre Ninguno y Cardiología");
+        grafo.agregarConexion(0, 2, 3, "Pasillo B – Entrada entre Ninguno y Neurología");
+        grafo.agregarConexion(0, 3, 4, "Pasillo C – Entrada entre Ninguno y Pediatría");
+        grafo.agregarConexion(0, 4, 6, "Pasillo D – Entrada entre Ninguno y Ginecología");
+        grafo.agregarConexion(0, 5, 7, "Pasillo E – Entrada entre Ninguno y Radiología");
+        grafo.agregarConexion(0, 6, 8, "Pasillo F – Entrada entre Ninguno y Oncología");
+        grafo.agregarConexion(0, 7, 2, "Pasillo G – Entrada entre Ninguno y Traumatología");
+
+        grafo.agregarConexion(1, 2, 4, "Pasillo H – Conexión entre Cardiología y Neurología");
+        grafo.agregarConexion(1, 3, 5, "Pasillo I – Conexión entre Cardiología y Pediatría");
+        grafo.agregarConexion(1, 4, 6, "Pasillo J – Conexión entre Cardiología y Ginecología");
+        grafo.agregarConexion(1, 5, 7, "Pasillo K – Conexión entre Cardiología y Radiología");
+        grafo.agregarConexion(1, 6, 5, "Pasillo L – Conexión entre Cardiología y Oncología");
+        grafo.agregarConexion(1, 7, 3, "Pasillo M – Conexión entre Cardiología y Traumatología");
+
+        grafo.agregarConexion(2, 3, 2, "Pasillo N – Conexión entre Neurología y Pediatría");
+        grafo.agregarConexion(2, 4, 4, "Pasillo O – Conexión entre Neurología y Ginecología");
+        grafo.agregarConexion(2, 5, 6, "Pasillo P – Conexión entre Neurología y Radiología");
+        grafo.agregarConexion(2, 6, 5, "Pasillo Q – Conexión entre Neurología y Oncología");
+        grafo.agregarConexion(2, 7, 3, "Pasillo R – Conexión entre Neurología y Traumatología");
+
+        grafo.agregarConexion(3, 4, 3, "Pasillo S – Conexión entre Pediatría y Ginecología");
+        grafo.agregarConexion(3, 5, 4, "Pasillo T – Conexión entre Pediatría y Radiología");
+        grafo.agregarConexion(3, 6, 2, "Pasillo U – Conexión entre Pediatría y Oncología");
+        grafo.agregarConexion(3, 7, 4, "Pasillo V – Conexión entre Pediatría y Traumatología");
+
+        grafo.agregarConexion(4, 5, 6, "Pasillo W – Conexión entre Ginecología y Radiología");
+        grafo.agregarConexion(4, 6, 4, "Pasillo X – Conexión entre Ginecología y Oncología");
+        grafo.agregarConexion(4, 7, 3, "Pasillo Y – Conexión entre Ginecología y Traumatología");
+
+        grafo.agregarConexion(5, 6, 3, "Pasillo Z – Conexión entre Radiología y Oncología");
+        grafo.agregarConexion(5, 7, 4, "Pasillo AA – Conexión entre Radiología y Traumatología");
+
+        grafo.agregarConexion(6, 7, 2, "Pasillo AB – Conexión entre Oncología y Traumatología");
     }
 
     public List<Integer> calcularRuta(int origen, int destino) {

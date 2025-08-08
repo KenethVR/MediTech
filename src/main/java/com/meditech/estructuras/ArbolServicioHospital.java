@@ -87,6 +87,4 @@ public class ArbolServicioHospital {
         }
     }
 
-    // Aquí puedes agregar métodos para eliminar o modificar si necesitas
-
 }

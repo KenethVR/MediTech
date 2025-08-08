@@ -15,6 +15,8 @@ public class GrafoHospital {
     public void agregarConexion(int origen, int destino, int peso, String descripcion) {
         adyacencias.computeIfAbsent(origen, k -> new ArrayList<>())
                 .add(new Arista(destino, peso, descripcion));
+        adyacencias.computeIfAbsent(destino, k -> new ArrayList<>())
+                .add(new Arista(origen, peso, descripcion));
     }
 
     public List<String> describirRuta(int origen, int destino) {
